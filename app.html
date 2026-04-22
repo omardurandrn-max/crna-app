@@ -874,7 +874,7 @@ async function callAPI(systemPrompt, userPrompt, maxTokens) {
     window.location.href = 'index.html';
     throw new Error('No API key.');
   }
-  const res = await fetch('/.netlify/functions/claude', {
+  const res = await fetch('/api/claude', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
