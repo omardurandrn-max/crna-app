@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="New Age CRNA">
+<title>New Age CRNA</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c0f;
+  --surface: #13161b;
+  --surface2: #1c2029;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8eaf0;
+  --muted: #6b7280;
+  --accent: #4ade80;
+  --accent-dim: rgba(74,222,128,0.12);
+  --accent-border: rgba(74,222,128,0.3);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.1);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.1);
+  --blue: #60a5fa;
+  --blue-dim: rgba(96,165,250,0.1);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.1);
+  --purple-border: rgba(167,139,250,0.3);
+  --orange: #fb923c;
+  --orange-dim: rgba(251,146,60,0.1);
+  --orange-border: rgba(251,146,60,0.3);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; }
+body { display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; min-height: 100vh; }
+
+/* Header */
+.header {
+  padding: 52px 20px 14px;
+  background: var(--bg);
+  position: sticky; top: 0; z-index: 10;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+.header-top { display: flex; align-items: center; justify-content: space-between; }
+.wordmark { font-family: 'DM Serif Display', serif; font-size: 20px; letter-spacing: -0.3px; color: var(--text); }
+.wordmark em { font-style: italic; color: var(--accent); }
+.wordmark sup { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); vertical-align: super; margin-left: 3px; }
+.streak-badge {
+  font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+  background: var(--accent-dim); color: var(--accent);
+  border: 1px solid var(--accent-border); border-radius: 20px;
+  padding: 3px 10px; letter-spacing: 0.5px;
+}
+
+/* Nav tabs — 5 tabs, smaller font */
+.nav { display: flex; gap: 2px; padding: 10px 16px 0; background: var(--bg); position: sticky; top: 70px; z-index: 9; border-bottom: 1px solid var(--border); }
+.nav-btn {
+  flex: 1; padding: 7px 2px; background: none; border: none; color: var(--muted);
+  font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+  cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all 0.2s; letter-spacing: 0.3px; text-transform: uppercase;
+}
+.nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.nav-btn.pimp-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+.nav-btn.cram-tab.active { color: var(--red); border-bottom-color: var(--red); }
+
+/* Main scroll area */
+.main { }
+
+/* Section heading */
+.section-label {
+  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+  color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* Input area */
+.input-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px; margin-bottom: 14px;
+}
+.input-card textarea {
+  width: 100%; background: none; border: none; outline: none;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+  line-height: 1.6; resize: none; min-height: 80px;
+}
+.input-card textarea::placeholder { color: var(--muted); }
+.input-row { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+.tag-select {
+  flex: 1; background: var(--surface2); border: 1px solid var(--border2);
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px;
+  padding: 8px 10px; border-radius: var(--radius-sm); outline: none;
+  -webkit-appearance: none;
+}
+.tag-select option { background: var(--surface2); }
+
+/* Buttons */
+.btn {
+  padding: 9px 18px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500; cursor: pointer; border: none;
+  transition: all 0.18s; white-space: nowrap;
+}
+.btn-primary { background: var(--accent); color: #0a0c0f; }
+.btn-primary:active { opacity: 0.85; transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+.btn-ghost:active { opacity: 0.75; }
+.btn-pimp { background: var(--orange); color: #0a0c0f; }
+.btn-pimp:disabled { opacity: 0.4; }
+
+/* Mode pills */
+.mode-pills { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.pill {
+  padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
+  cursor: pointer; border: 1px solid var(--border2); background: none;
+  color: var(--muted); transition: all 0.18s; font-family: 'DM Sans', sans-serif;
+}
+.pill.active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent-border); }
+.pill-cram { color: var(--red); border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.05); }
+.pill-cram.active { background: rgba(248,113,113,0.15); border-color: var(--red); }
+.pill-pearl { color: var(--purple); border-color: var(--purple-border); background: var(--purple-dim); }
+.pill-pearl.active { background: rgba(167,139,250,0.2); border-color: var(--purple); }
+
+/* Loading state */
+.loading-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px 20px;
+  text-align: center; display: none;
+}
+.loading-card.show { display: block; }
+.loading-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 10px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulse { 0%,80%,100%{opacity:0.2;transform:scale(0.8)} 40%{opacity:1;transform:scale(1)} }
+.loading-label { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+/* Review output */
+.review-output {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px; display: none; margin-bottom: 14px;
+}
+.review-output.show { display: block; }
+.review-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.review-meta { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 14px; }
+.review-body { font-size: 14px; line-height: 1.75; color: var(--text); }
+.review-body h3 { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--accent); margin: 16px 0 6px; font-weight: 400; }
+.review-body p { margin-bottom: 10px; }
+.review-body ul { padding-left: 16px; margin-bottom: 10px; }
+.review-body li { margin-bottom: 4px; }
+.review-body strong { color: var(--amber); font-weight: 500; }
+
+.pimp-body h3 { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; margin: 12px 0 6px; font-weight: 500; }
+.pimp-body p { margin-bottom: 8px; font-size: 13px; }
+.pimp-body ul { padding-left: 15px; margin-bottom: 8px; }
+.pimp-body li { margin-bottom: 6px; font-size: 13px; }
+.pimp-body strong { color: var(--amber); font-weight: 500; }
+
+.cram-body h3 { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; margin: 12px 0 6px; font-weight: 500; }
+.cram-body p { margin-bottom: 8px; font-size: 13px; }
+.cram-body ul { padding-left: 15px; margin-bottom: 8px; }
+.cram-body li { margin-bottom: 5px; font-size: 13px; }
+.cram-body strong { color: var(--amber); font-weight: 500; }
+
+.pearl-body h3 { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--purple); margin: 14px 0 6px; font-weight: 500; }
+.pearl-body p { margin-bottom: 8px; font-size: 13px; }
+.pearl-body ul { padding-left: 15px; margin-bottom: 10px; }
+.pearl-body li { margin-bottom: 5px; font-size: 13px; }
+.pearl-body strong { color: var(--amber); font-weight: 500; }
+
+.case-body h3 { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--purple); margin: 12px 0 5px; font-weight: 500; }
+.case-body p { margin-bottom: 8px; font-size: 13px; }
+.case-body ul { padding-left: 14px; margin-bottom: 8px; }
+.case-body li { margin-bottom: 4px; font-size: 13px; }
+.case-body strong { color: var(--amber); font-weight: 500; }
+
+/* CRAM output */
+.cram-output {
+  background: var(--surface); border: 1px solid rgba(248,113,113,0.2);
+  border-radius: var(--radius); padding: 18px; display: none; margin-bottom: 14px;
+}
+.cram-output.show { display: block; }
+.cram-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.cram-label {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--red); background: rgba(248,113,113,0.1);
+  border: 1px solid rgba(248,113,113,0.3); border-radius: 4px; padding: 2px 8px; white-space: nowrap;
+}
+.cram-title { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--text); }
+.cram-body { font-size: 13.5px; line-height: 1.75; color: var(--text); }
+.cram-body .cram-section { margin-bottom: 14px; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+.cram-body .cram-section-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 7px; font-weight: 500; }
+.cram-body .t-red { color: var(--red); }
+.cram-body .t-amber { color: var(--amber); }
+.cram-body .t-blue { color: var(--blue); }
+.cram-body .t-accent { color: var(--accent); }
+.cram-body ul { padding-left: 15px; }
+.cram-body li { margin-bottom: 5px; font-size: 13px; }
+.cram-body strong { color: var(--amber); font-weight: 500; }
+
+/* PEARL output */
+.pearl-output {
+  background: var(--surface); border: 1px solid var(--purple-border);
+  border-radius: var(--radius); padding: 18px; display: none; margin-bottom: 14px;
+}
+.pearl-output.show { display: block; }
+.pearl-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.pearl-label {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--purple); background: var(--purple-dim);
+  border: 1px solid var(--purple-border); border-radius: 4px; padding: 2px 8px; white-space: nowrap;
+}
+.pearl-title { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--text); }
+.pearl-body { font-size: 13.5px; line-height: 1.75; color: var(--text); }
+.pearl-body h3 { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--purple); letter-spacing: 1.2px; text-transform: uppercase; margin: 14px 0 6px; }
+.pearl-body p { margin-bottom: 8px; font-size: 13px; }
+.pearl-body ul { padding-left: 15px; margin-bottom: 10px; }
+.pearl-body li { margin-bottom: 5px; font-size: 13px; }
+.pearl-body strong { color: var(--amber); font-weight: 500; }
+.pearl-body .warn-box { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.25); border-radius: var(--radius-sm); padding: 10px 12px; margin: 10px 0; font-size: 12.5px; }
+.pearl-body .warn-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--amber); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+
+/* Question cards */
+.question-stack { display: flex; flex-direction: column; gap: 10px; }
+.q-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.q-header { padding: 12px 14px; }
+.q-type-badge {
+  display: inline-block; font-family: 'DM Mono', monospace; font-size: 10px;
+  font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 4px; margin-bottom: 8px;
+}
+.badge-mcq { background: var(--blue-dim); color: var(--blue); }
+.badge-sata { background: var(--amber-dim); color: var(--amber); }
+.badge-match { background: var(--accent-dim); color: var(--accent); }
+.q-stem { font-size: 13.5px; line-height: 1.6; color: var(--text); }
+.q-options { padding: 0 14px 4px; display: flex; flex-direction: column; gap: 6px; }
+.q-opt {
+  padding: 9px 12px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border2); background: var(--surface2);
+  font-size: 13px; color: var(--text); cursor: pointer;
+  transition: all 0.15s; display: flex; align-items: flex-start; gap: 9px;
+  text-align: left; width: 100%; font-family: 'DM Sans', sans-serif;
+}
+.q-opt.selected { border-color: var(--blue); background: var(--blue-dim); }
+.q-opt.correct { border-color: var(--accent); background: var(--accent-dim); }
+.q-opt.wrong { border-color: var(--red); background: var(--red-dim); }
+.opt-letter { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: var(--muted); min-width: 14px; padding-top: 1px; }
+.q-opt.correct .opt-letter { color: var(--accent); }
+.q-opt.wrong .opt-letter { color: var(--red); }
+.q-rationale {
+  margin: 6px 14px 12px; padding: 11px 13px;
+  background: rgba(74,222,128,0.05); border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm); font-size: 13px; line-height: 1.65;
+  color: var(--text); display: none;
+}
+.q-rationale.show { display: block; }
+.rationale-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+
+/* Matching */
+.match-grid { padding: 0 14px 12px; display: flex; flex-direction: column; gap: 6px; }
+.match-row { display: flex; gap: 6px; align-items: center; }
+.match-term { flex: 1; padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius-sm); font-size: 12px; color: var(--text); }
+.match-select { flex: 1; padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius-sm); font-size: 12px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; -webkit-appearance: none; cursor: pointer; }
+.match-select.correct { border-color: var(--accent); }
+.match-select.wrong { border-color: var(--red); }
+.check-btn-row { padding: 2px 14px 12px; }
+
+/* Score bar */
+.score-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; display: none; margin-bottom: 14px; }
+.score-bar.show { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.score-num { font-family: 'DM Serif Display', serif; font-size: 30px; color: var(--accent); }
+.score-label { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+/* PIMP TAB */
+.pimp-intro {
+  background: linear-gradient(135deg, rgba(251,146,60,0.08), rgba(251,146,60,0.03));
+  border: 1px solid var(--orange-border); border-radius: var(--radius);
+  padding: 14px 16px; margin-bottom: 16px;
+}
+.pimp-intro-title { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--orange); margin-bottom: 6px; }
+.pimp-intro-sub { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+.pimp-input-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 14px; }
+.pimp-input-card textarea { width: 100%; background: none; border: none; outline: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6; resize: none; min-height: 60px; }
+.pimp-input-card textarea::placeholder { color: var(--muted); }
+
+.pimp-output { background: var(--surface); border: 1px solid var(--orange-border); border-radius: var(--radius); padding: 18px; display: none; margin-bottom: 14px; }
+.pimp-output.show { display: block; }
+.pimp-output-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.pimp-badge {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--orange); background: var(--orange-dim);
+  border: 1px solid var(--orange-border); border-radius: 4px; padding: 2px 8px; white-space: nowrap;
+}
+.pimp-topic { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--text); }
+.pimp-body { font-size: 13.5px; line-height: 1.75; color: var(--text); }
+.pimp-section { margin-bottom: 16px; }
+.pimp-section-title {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px;
+  text-transform: uppercase; font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.pimp-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
+.t-orange { color: var(--orange); }
+.t-purple { color: var(--purple); }
+.t-amber { color: var(--amber); }
+.t-blue { color: var(--blue); }
+.t-accent { color: var(--accent); }
+.t-red { color: var(--red); }
+.pimp-body ul { padding-left: 15px; margin-bottom: 8px; }
+.pimp-body li { margin-bottom: 6px; font-size: 13px; }
+.pimp-body strong { color: var(--amber); font-weight: 500; }
+.pimp-body p { margin-bottom: 8px; font-size: 13px; }
+.pimp-answer-box {
+  background: rgba(251,146,60,0.06); border: 1px solid var(--orange-border);
+  border-radius: var(--radius-sm); padding: 10px 12px; margin: 8px 0;
+  font-size: 13px;
+}
+.pimp-answer-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--orange); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+
+/* Quick PIMP pills */
+.pimp-quick { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.pimp-quick-pill {
+  padding: 5px 11px; border-radius: 20px; font-size: 11px; font-weight: 500;
+  cursor: pointer; border: 1px solid var(--orange-border); background: var(--orange-dim);
+  color: var(--orange); transition: all 0.18s; font-family: 'DM Sans', sans-serif;
+}
+.pimp-quick-pill:active { opacity: 0.7; }
+
+/* History */
+.history-empty { text-align: center; padding: 50px 20px; }
+.history-empty p { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
+.history-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px; cursor: pointer; transition: border-color 0.15s; }
+.history-item:active { border-color: var(--border2); }
+.history-topic { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.history-meta { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; display: flex; gap: 10px; flex-wrap: wrap; }
+.history-score { color: var(--accent); }
+
+/* Install banner */
+.install-banner { margin-bottom: 14px; background: var(--surface); border: 1px solid var(--accent-border); border-radius: var(--radius); padding: 12px 14px; display: none; }
+.install-banner.show { display: flex; align-items: center; gap: 10px; }
+.install-text { flex: 1; }
+.install-text strong { font-size: 13px; display: block; }
+.install-text span { font-size: 11px; color: var(--muted); }
+.install-dismiss { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 4px; }
+
+/* Tabs */
+.tab-content { display: none !important; flex: 0 !important; overflow: hidden !important; height: 0 !important; padding: 0 !important; }
+.tab-content.active { display: block !important; flex: 1 !important; overflow-y: auto !important; height: auto !important; padding: 18px 18px 48px !important; }
+
+/* Empty state */
+.empty-state { text-align: center; padding: 44px 20px; }
+.empty-icon { font-size: 32px; margin-bottom: 10px; }
+.empty-title { font-family: 'DM Serif Display', serif; font-size: 17px; margin-bottom: 6px; }
+.empty-sub { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+/* CRAM banner */
+.cram-mode-banner { background: linear-gradient(135deg, rgba(248,113,113,0.08), rgba(251,191,36,0.06)); border: 1px solid rgba(248,113,113,0.25); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 14px; display: none; align-items: center; gap: 8px; }
+.cram-mode-banner.show { display: flex; }
+.cram-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; animation: pulse 1.5s ease-in-out infinite; }
+.cram-banner-text { font-size: 12px; color: var(--red); font-family: 'DM Mono', monospace; }
+
+/* Citations */
+.citation-block {
+  margin-top: 14px; padding: 10px 13px;
+  background: rgba(96,165,250,0.05); border: 1px solid rgba(96,165,250,0.2);
+  border-radius: var(--radius-sm);
+}
+.citation-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--blue); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 5px; }
+.citation-list { font-size: 11.5px; color: var(--muted); line-height: 1.7; }
+.citation-list li { margin-bottom: 3px; list-style: none; padding-left: 12px; position: relative; }
+.citation-list li::before { content: '›'; position: absolute; left: 0; color: var(--blue); }
+.citation-primary { color: var(--blue) !important; font-weight: 500; }
+
+/* Weak spot tracker */
+.weak-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px; }
+.weak-topic { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.weak-bar-wrap { height: 4px; background: var(--surface2); border-radius: 2px; margin-bottom: 4px; }
+.weak-bar { height: 4px; border-radius: 2px; background: var(--red); transition: width 0.4s; }
+.weak-bar.ok { background: var(--amber); }
+.weak-bar.good { background: var(--accent); }
+.weak-meta { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; display: flex; justify-content: space-between; }
+
+/* Case simulator */
+.case-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+.case-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.case-badge { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--purple); background: var(--purple-dim); border: 1px solid var(--purple-border); border-radius: 4px; padding: 2px 7px; }
+.case-title { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--text); }
+.case-body { font-size: 13px; line-height: 1.75; color: var(--text); }
+.case-body h3 { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--purple); letter-spacing: 1.2px; text-transform: uppercase; margin: 12px 0 5px; }
+.case-body ul { padding-left: 14px; margin-bottom: 8px; }
+.case-body li { margin-bottom: 4px; }
+.case-body strong { color: var(--amber); font-weight: 500; }
+.case-scenario-box { background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 11px 13px; margin-bottom: 12px; font-size: 13px; line-height: 1.65; }
+.case-scenario-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--purple); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+
+/* Key gate screen */
+#key-gate {
+  position: fixed; inset: 0; background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 32px 28px; z-index: 100; max-width: 480px; margin: 0 auto;
+}
+.key-gate-logo { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--text); margin-bottom: 6px; }
+.key-gate-logo em { font-style: italic; color: var(--accent); }
+.key-gate-sub { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: 0.5px; margin-bottom: 36px; }
+.key-gate-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; width: 100%; }
+.key-gate-title { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--text); margin-bottom: 6px; }
+.key-gate-desc { font-size: 12px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; }
+.key-input-wrap { position: relative; margin-bottom: 10px; }
+.key-input {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); padding: 11px 40px 11px 12px;
+  color: var(--text); font-family: 'DM Mono', monospace; font-size: 13px;
+  outline: none; -webkit-appearance: none; letter-spacing: 0.5px;
+}
+.key-input::placeholder { color: var(--muted); letter-spacing: 0; font-family: 'DM Sans', sans-serif; }
+.key-input.valid { border-color: var(--accent-border); }
+.key-input.invalid { border-color: rgba(248,113,113,0.5); }
+.key-toggle {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 14px; padding: 4px;
+}
+.key-error { font-size: 12px; color: var(--red); margin-bottom: 10px; display: none; font-family: 'DM Mono', monospace; }
+.key-error.show { display: block; }
+.key-notice {
+  margin-top: 14px; padding: 10px 12px;
+  background: rgba(96,165,250,0.05); border: 1px solid rgba(96,165,250,0.15);
+  border-radius: var(--radius-sm); font-size: 11px; color: var(--muted); line-height: 1.6;
+}
+.key-notice strong { color: var(--blue); font-weight: 500; }
+
+/* Key status pill in header */
+.key-status {
+  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+  border-radius: 20px; padding: 3px 9px; letter-spacing: 0.3px;
+  cursor: pointer; border: none; transition: all 0.2s;
+}
+.key-status.connected { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+.key-status.disconnected { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,113,113,0.3); }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="wordmark">New Age <em>CRNA</em><sup>Rx</sup></div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="streak-badge" id="streak-badge">0 sessions</div>
+      <button class="key-status connected" id="key-status-btn" onclick="showKeySettings()" title="API key — tap to manage">● live</button>
+    </div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="switchTab('generate',this)">Generate</button>
+  <button class="nav-btn" onclick="switchTab('drill',this)">Drill</button>
+  <button class="nav-btn cram-tab" onclick="switchTab('cram',this)">Cram</button>
+  <button class="nav-btn pimp-tab" onclick="switchTab('pimp',this)">PIMP</button>
+  <button class="nav-btn" onclick="switchTab('case',this)">Case</button>
+  <button class="nav-btn" onclick="switchTab('weak',this)">Gaps</button>
+  <button class="nav-btn" onclick="switchTab('history',this)">Log</button>
+</div>
+
+<!-- ═══════════════════════════════════ GENERATE TAB ═══════════════════════════════════ -->
+<div class="main tab-content active" id="tab-generate">
+
+  <div class="install-banner" id="install-banner">
+    <div style="font-size:20px">📲</div>
+    <div class="install-text">
+      <strong>Add to Home Screen</strong>
+      <span>Safari → Share → Add to Home Screen</span>
+    </div>
+    <button class="install-dismiss" onclick="dismissInstall()">×</button>
+  </div>
+
+  <p class="section-label">Topic or paste notes</p>
+  <div class="input-card">
+    <textarea id="topic-input" placeholder="e.g. volatile anesthetics, neostigmine reversal, succinylcholine contraindications..." rows="3"></textarea>
+    <div class="input-row">
+      <select class="tag-select" id="course-tag">
+        <option value="">No tag</option>
+        <option value="Patho">Pathophysiology</option>
+        <option value="Pharm">Pharmacology</option>
+        <option value="GI">GI</option>
+        <option value="Immuno">Immunology</option>
+        <option value="Airway">Airway</option>
+        <option value="Physics">Physics / Equipment</option>
+        <option value="Anatomy">Anatomy</option>
+        <option value="Regional">Regional</option>
+        <option value="Cardiac">Cardiac</option>
+        <option value="Clinical">Clinical</option>
+      </select>
+    </div>
+  </div>
+
+  <p class="section-label">Mode</p>
+  <div class="mode-pills">
+    <button class="pill active" onclick="setMode('review')" id="pill-review">Chapter Review</button>
+    <button class="pill pill-cram" onclick="setMode('cram')" id="pill-cram">⚡ Cram</button>
+    <button class="pill pill-pearl" onclick="setMode('pearl')" id="pill-pearl">Clinical Pearls</button>
+    <button class="pill" onclick="setMode('mcq')" id="pill-mcq">MCQ</button>
+    <button class="pill" onclick="setMode('sata')" id="pill-sata">SATA</button>
+    <button class="pill" onclick="setMode('matching')" id="pill-matching">Matching</button>
+    <button class="pill" onclick="setMode('mixed')" id="pill-mixed">Mixed Qs</button>
+  </div>
+
+  <div class="cram-mode-banner" id="cram-banner">
+    <div class="cram-dot"></div>
+    <div class="cram-banner-text">Exam-day mode. What you need to pass. Nothing else.</div>
+  </div>
+
+  <button class="btn btn-primary" id="generate-btn" onclick="generate()" style="width:100%;padding:12px;margin-bottom:14px;">Generate</button>
+
+  <div class="loading-card" id="loading-card">
+    <div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div class="loading-label" id="loading-label">Pulling mechanisms...</div>
+  </div>
+
+  <!-- Review output -->
+  <div class="review-output" id="review-output">
+    <div class="review-title" id="review-title"></div>
+    <div class="review-meta" id="review-meta"></div>
+    <div class="review-body" id="review-body"></div>
+    <button class="btn btn-ghost" onclick="saveToHistory(event)" style="margin-top:14px;width:100%;">Save to History</button>
+  </div>
+
+  <!-- Cram output -->
+  <div class="cram-output" id="cram-output">
+    <div class="cram-header">
+      <span class="cram-label">⚡ Cram</span>
+      <div class="cram-title" id="cram-title"></div>
+    </div>
+    <div class="cram-body" id="cram-body"></div>
+    <button class="btn btn-ghost" onclick="saveToHistory(event)" style="margin-top:14px;width:100%;">Save to History</button>
+  </div>
+
+  <!-- Pearl output -->
+  <div class="pearl-output" id="pearl-output">
+    <div class="pearl-header">
+      <span class="pearl-label">Clinical Pearls</span>
+      <div class="pearl-title" id="pearl-title"></div>
+    </div>
+    <div class="pearl-body" id="pearl-body"></div>
+    <button class="btn btn-ghost" onclick="saveToHistory(event)" style="margin-top:14px;width:100%;">Save to History</button>
+  </div>
+
+  <!-- Questions output -->
+  <div id="questions-output" style="display:none;">
+    <div class="score-bar" id="score-bar">
+      <div>
+        <div class="score-num" id="score-num">—</div>
+        <div class="score-label">score</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:13px;color:var(--muted)" id="score-detail"></div>
+        <button class="btn btn-ghost" onclick="saveToHistory(event)" style="margin-top:6px;font-size:12px;padding:6px 12px;">Save</button>
+      </div>
+    </div>
+    <div class="question-stack" id="question-stack"></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════ DRILL TAB ═══════════════════════════════════ -->
+<div class="main tab-content" id="tab-drill">
+  <div class="empty-state" id="drill-empty">
+    <div class="empty-icon">⚡</div>
+    <div class="empty-title">Nothing to drill yet</div>
+    <div class="empty-sub">Generate and save question sets, then re-drill them here.</div>
+  </div>
+  <div id="drill-content" style="display:none;">
+    <p class="section-label">Saved question sets</p>
+    <div id="drill-sets"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ CRAM TAB ═══════════════════════════════════ -->
+<div class="main tab-content" id="tab-cram">
+  <div style="background:linear-gradient(135deg,rgba(248,113,113,0.08),rgba(251,191,36,0.05));border:1px solid rgba(248,113,113,0.2);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--red);margin-bottom:5px;">⚡ Cram Mode</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.6;">Morning-of-exam mode. Enter any topic and get the minimum viable knowledge to pass — mechanisms that drive questions, common traps, critical numbers, and one-liners that stick under pressure.</div>
+  </div>
+  <p class="section-label">Topic</p>
+  <div class="input-card">
+    <textarea id="cram-topic-input" placeholder="e.g. MAC values, heparin reversal, succinylcholine contraindications..." rows="2"></textarea>
+    <div class="input-row">
+      <select class="tag-select" id="cram-course-tag">
+        <option value="">No tag</option>
+        <option value="Pharm">Pharmacology</option>
+        <option value="Patho">Pathophysiology</option>
+        <option value="Regional">Regional Anesthesia</option>
+        <option value="Cardiac">Cardiac</option>
+        <option value="Airway">Airway</option>
+        <option value="Physics">Equipment / Physics</option>
+        <option value="Clinical">Clinical</option>
+      </select>
+      <button class="btn btn-primary" id="cram-btn" onclick="cramGenerate()" style="white-space:nowrap;">Cram It</button>
+    </div>
+  </div>
+  <div class="loading-card" id="cram-loading">
+    <div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div class="loading-label" id="cram-loading-label">Stripping to what matters...</div>
+  </div>
+  <div class="cram-output" id="cram-tab-output">
+    <div class="cram-header">
+      <span class="cram-label">⚡ Cram</span>
+      <div class="cram-title" id="cram-tab-title"></div>
+    </div>
+    <div class="cram-body" id="cram-tab-body"></div>
+    <button class="btn btn-ghost" onclick="saveCramTab(event)" style="margin-top:14px;width:100%;">Save to History</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ PIMP TAB ═══════════════════════════════════ -->
+<div class="main tab-content" id="tab-pimp">
+
+  <div class="pimp-intro">
+    <div class="pimp-intro-title">OR PIMP Prep</div>
+    <div class="pimp-intro-sub">Get clinical pearls, anesthetic considerations, and attending-level answers for any drug, condition, or concept. Built for when you're scrubbed in and about to get pimped.</div>
+  </div>
+
+  <p class="section-label">Quick fire topics</p>
+  <div class="pimp-quick">
+    <button class="pimp-quick-pill" onclick="quickPimp('Succinylcholine')">Succinylcholine</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Rocuronium')">Rocuronium</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Neostigmine reversal')">Neostigmine</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Volatile anesthetics MAC')">MAC</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Propofol')">Propofol</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Ketamine')">Ketamine</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Etomidate')">Etomidate</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Aortic stenosis hemodynamic goals')">AS Goals</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Local anesthetic toxicity LAST')">LA Toxicity</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Heparin and protamine')">Heparin</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Laryngospasm management')">Laryngospasm</button>
+    <button class="pimp-quick-pill" onclick="quickPimp('Fentanyl pharmacology')">Fentanyl</button>
+  </div>
+
+  <p class="section-label">Custom topic</p>
+  <div class="pimp-input-card">
+    <textarea id="pimp-topic" placeholder="Enter drug, condition, procedure, or concept..." rows="2"></textarea>
+    <div class="input-row" style="margin-top:10px;">
+      <button class="btn btn-pimp" id="pimp-btn" onclick="pimpGenerate()" style="width:100%;padding:11px;">Get PIMP Answer</button>
+    </div>
+  </div>
+
+  <div class="loading-card" id="pimp-loading">
+    <div class="loading-dots" style="margin-bottom:8px;">
+      <div class="dot" style="background:var(--orange)"></div>
+      <div class="dot" style="background:var(--orange)"></div>
+      <div class="dot" style="background:var(--orange)"></div>
+    </div>
+    <div class="loading-label" id="pimp-loading-label">Preparing clinical briefing...</div>
+  </div>
+
+  <div class="pimp-output" id="pimp-output">
+    <div class="pimp-output-header">
+      <span class="pimp-badge">OR PIMP</span>
+      <div class="pimp-topic" id="pimp-output-topic"></div>
+    </div>
+    <div class="pimp-body" id="pimp-body"></div>
+    <button class="btn btn-ghost" onclick="savePimp(event)" style="margin-top:14px;width:100%;">Save to History</button>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════ CASE SIMULATOR TAB ═══════════════════════════════════ -->
+<div class="main tab-content" id="tab-case">
+  <div style="background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(167,139,250,0.03));border:1px solid var(--purple-border);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--purple);margin-bottom:5px;">Case Simulator</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.6;">Enter a patient scenario and get a full anesthetic walkthrough — induction choices, maintenance strategy, emergence plan, anticipated complications, and the pimp questions your attending will ask.</div>
+  </div>
+  <p class="section-label">Patient scenario</p>
+  <div class="input-card">
+    <textarea id="case-input" placeholder="e.g. 68yo male, BMI 34, HTN, DM2, EF 35%, presenting for laparoscopic cholecystectomy..." rows="4"></textarea>
+    <div class="input-row" style="margin-top:10px;">
+      <button class="btn" style="background:var(--purple);color:#0a0c0f;width:100%;padding:11px;" id="case-btn" onclick="caseGenerate()">Run Case</button>
+    </div>
+  </div>
+  <div class="loading-card" id="case-loading">
+    <div class="loading-dots" style="margin-bottom:8px;">
+      <div class="dot" style="background:var(--purple)"></div>
+      <div class="dot" style="background:var(--purple)"></div>
+      <div class="dot" style="background:var(--purple)"></div>
+    </div>
+    <div class="loading-label" id="case-loading-label">Building case plan...</div>
+  </div>
+  <div class="case-card" id="case-output" style="display:none;">
+    <div class="case-header">
+      <span class="case-badge">Case Sim</span>
+      <div class="case-title" id="case-title-display"></div>
+    </div>
+    <div class="case-body" id="case-body"></div>
+    <button class="btn btn-ghost" onclick="saveCaseSim(event)" style="margin-top:14px;width:100%;">Save to Log</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ WEAK SPOT TAB ═══════════════════════════════════ -->
+<div class="main tab-content" id="tab-weak">
+  <div style="background:rgba(248,113,113,0.05);border:1px solid rgba(248,113,113,0.15);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--red);margin-bottom:5px;">Knowledge Gaps</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.6;">Auto-tracked from every question you answer. Topics you miss most appear at the top. Use this to decide what to generate next.</div>
+  </div>
+  <div id="weak-empty" style="text-align:center;padding:44px 20px;">
+    <div style="font-size:28px;margin-bottom:8px;">📊</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:6px;">No data yet</div>
+    <div style="font-size:12px;color:var(--muted);">Answer questions in Generate or Drill. Your weak spots will appear here automatically.</div>
+  </div>
+  <div id="weak-list"></div>
+  <div id="weak-actions" style="display:none;margin-top:6px;">
+    <button class="btn btn-ghost" onclick="clearWeakSpots()" style="width:100%;font-size:12px;">Clear tracking data</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ HISTORY TAB ═══════════════════════════════════ -->
+<div class="main tab-content" id="tab-history">
+  <div class="history-empty" id="history-empty">
+    <p>No sessions saved yet.</p>
+    <p>Generate content and tap Save to track progress.</p>
+  </div>
+  <div id="history-list"></div>
+</div>
+
+<script>
+/* ─── KEY MANAGEMENT ─── */
+function getKey() { return localStorage.getItem('nac_api_key') || ''; }
+
+function showKeySettings() {
+  var current = getKey();
+  var masked = current ? current.substring(0,14) + '••••••••••••' : 'None';
+  if (confirm('API Key: ' + masked + '\n\nTap OK to remove key and go back to setup. Tap Cancel to keep it.')) {
+    localStorage.removeItem('nac_api_key');
+    window.location.href = 'index.html';
+  }
+}
+
+function updateKeyStatus() {
+  var btn = document.getElementById('key-status-btn');
+  var sessions = parseInt(localStorage.getItem('nac_sessions')||'0');
+  if (btn) {
+    if (getKey()) { btn.className='key-status connected'; btn.textContent='● live'; }
+    else { btn.className='key-status disconnected'; btn.textContent='○ no key'; }
+  }
+}
+
+function initKeyGate() {
+  if (!getKey()) { window.location.href = 'index.html'; return; }
+  updateKeyStatus();
+}
+
+/* ─── STATE ─── */
+let currentMode = 'review';
+let currentQuestions = [];
+let currentTopic = '';
+let currentTag = '';
+let answered = 0, correct = 0;
+let sessionData = null;
+let history = JSON.parse(localStorage.getItem('nac_history') || '[]');
+let sessions = parseInt(localStorage.getItem('nac_sessions') || '0');
+let weakSpots = JSON.parse(localStorage.getItem('nac_weak') || '{}');
+
+updateStreak();
+renderHistory();
+renderDrill();
+renderWeakSpots();
+initKeyGate();
+
+if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && !window.navigator.standalone && !localStorage.getItem('install_dismissed')) {
+  document.getElementById('install-banner').classList.add('show');
+}
+function dismissInstall() {
+  document.getElementById('install-banner').classList.remove('show');
+  localStorage.setItem('install_dismissed','1');
+}
+
+/* ─── CITATION ENGINE ─── */
+const CITATION_FOOTER = `
+
+After your content, append a citations block using this exact HTML:
+<div class="citation-block">
+<div class="citation-label">Sources</div>
+<ul class="citation-list">
+<li><span class="citation-primary">Nagelhout & Plaus</span> — Nurse Anesthesia, 6th ed. (Primary source)</li>
+<li>Barash et al. — Clinical Anesthesia, 8th ed.</li>
+<li>Miller et al. — Miller's Anesthesia, 9th ed.</li>
+<li>Stoelting & Hillier — Pharmacology & Physiology in Anesthetic Practice, 5th ed.</li>
+</ul>
+</div>
+
+Note: Content is synthesized from standard anesthesia texts. Verify specific doses and thresholds against your program's assigned edition of Nagelhout before an exam.`;
+
+const CITATION_FOOTER_SHORT = `
+
+After content, append:
+<div class="citation-block"><div class="citation-label">Sources</div><ul class="citation-list"><li><span class="citation-primary">Nagelhout & Plaus</span> — Nurse Anesthesia, 6th ed.</li><li>Barash et al. — Clinical Anesthesia, 8th ed.</li><li>Miller — Miller's Anesthesia, 9th ed.</li></ul></div>`;
+
+/* ─── NAV ─── */
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+/* ─── MODE ─── */
+function setMode(m) {
+  currentMode = m;
+  ['review','cram','pearl','mcq','sata','matching','mixed'].forEach(id => {
+    document.getElementById('pill-'+id).classList.toggle('active', id === m);
+  });
+  document.getElementById('cram-banner').classList.toggle('show', m === 'cram');
+}
+
+function updateStreak() {
+  sessions = parseInt(localStorage.getItem('nac_sessions') || '0');
+  var sb = document.getElementById('streak-badge'); if(sb) sb.textContent = sessions + (sessions===1?' session':' sessions');
+}
+
+/* ─── SYSTEM PROMPTS ─── */
+const SRNA_BASE = `You are a ruthless CRNA educator. Your student is an SRNA at an advanced program who came from ICU nursing and thinks analytically. They will be getting pimped by attendings in the OR. Content must align with Nagelhout & Plaus Nurse Anesthesia as the primary reference, supplemented by Barash Clinical Anesthesia and Miller's Anesthesia. Never be vague. Use clinical language appropriate for an advanced practice provider.`;
+
+function getSystemPrompt(mode) {
+  if (mode === 'review') return SRNA_BASE + `\n\nWrite a deep chapter review using HTML with <h3> headings, <strong> for key terms, <ul><li> for lists, <p> for paragraphs. Sections: CORE PATHOPHYSIOLOGY/MECHANISM, CLINICAL PRESENTATION & ANESTHESIA RELEVANCE, KEY PHARMACOLOGY (if applicable), HIGH-YIELD EXAM POINTS, CLINICAL PEARLS FOR THE CRNA.` + CITATION_FOOTER;
+
+  if (mode === 'cram') return SRNA_BASE + `\n\nReturn HTML with exactly 5 sections, each in a div with class "cram-section":
+1. <div class="cram-section-title t-red">Must-Know Mechanisms</div> — 4-6 bullets, mechanism-level only
+2. <div class="cram-section-title t-amber">Exam Traps & Distractors</div> — 3-5 bullets, classic trick answers
+3. <div class="cram-section-title t-blue">Critical Numbers & Thresholds</div> — key values from Nagelhout (omit if not relevant)
+4. <div class="cram-section-title t-accent">CRNA Clinical Hook</div> — 2-3 bullets, intraoperative relevance
+5. <div class="cram-section-title t-amber">One-Liners to Remember</div> — 3-5 punchy memory anchors
+Use <ul><li> for all bullets. <strong> the single most critical word per bullet.` + CITATION_FOOTER_SHORT;
+
+  if (mode === 'pearl') return SRNA_BASE + `\n\nGenerate clinical pearls grounded in Nagelhout & Plaus as primary source. Return HTML with <h3> sections: CLINICAL PEARLS, ANESTHETIC CONSIDERATIONS, WHAT CAN GO WRONG, PROVIDER MINDSET. Use <ul><li> bullets and <strong> for critical terms. Include a div class="warn-box" with child div class="warn-label" containing "Critical Safety Point" for the single most important safety warning.` + CITATION_FOOTER;
+
+  if (mode === 'pimp') return SRNA_BASE + `\n\nYou are prepping an SRNA for OR pimping. Reference Nagelhout & Plaus as primary. The student's pimp bank includes: fentanyl onset/duration, succinylcholine onset/receptors/contraindications, rocuronium dosing/metabolism, neostigmine dosing/why paired with glycopyrrolate, volatile MAC values, blood:gas and oil:gas coefficients, PONV receptors, laryngeal nerve innervation, extubation criteria, regional nerve blocks, hemodynamic goals for valvular disease, heparin/protamine, local anesthetic toxicity, BIS levels, CVP waveforms.
+
+Return HTML sections:
+<div class="pimp-section"><div class="pimp-section-title t-orange">The One-Line Answer</div>...</div>
+<div class="pimp-section"><div class="pimp-section-title t-blue">The Mechanism</div>...</div>
+<div class="pimp-section"><div class="pimp-section-title t-accent">Clinical Pearls</div>...</div>
+<div class="pimp-section"><div class="pimp-section-title t-amber">Attending Follow-Up Questions</div>...</div>
+<div class="pimp-section"><div class="pimp-section-title t-purple">Anesthetic Considerations</div>...</div>
+<div class="pimp-section"><div class="pimp-section-title t-red">What NOT to Say</div>...</div>
+
+For "The One-Line Answer": wrap answer in div class="pimp-answer-box" with child div class="pimp-answer-label" containing "Say This".
+Use <ul><li> for all lists. <strong> key terms.` + CITATION_FOOTER_SHORT;
+
+  if (mode === 'case') return SRNA_BASE + `\n\nYou are running a full anesthetic case simulation grounded in Nagelhout & Plaus. Return HTML with these sections using <h3> tags:
+PATIENT SUMMARY (brief, 2-3 sentences in a div class="case-scenario-box" with child div class="case-scenario-label" containing "Scenario"),
+PRE-OP CONSIDERATIONS,
+INDUCTION STRATEGY,
+MAINTENANCE PLAN,
+EMERGENCE & EXTUBATION,
+ANTICIPATED COMPLICATIONS,
+PIMP QUESTIONS FOR THIS CASE (4-5 questions an attending would ask, each on its own line bolded)
+
+Use <ul><li> for all lists. <strong> critical decision points. Be specific — name drugs, doses, and rationale.` + CITATION_FOOTER;
+}
+
+/* ─── API CALL (shared, with error isolation) ─── */
+async function callAPI(systemPrompt, userPrompt, maxTokens) {
+  const key = getKey();
+  if (!key) {
+    window.location.href = 'index.html';
+    throw new Error('No API key.');
+  }
+  const res = await fetch('/.netlify/functions/claude', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: maxTokens || 2000,
+      system: systemPrompt,
+      messages: [{role: 'user', content: userPrompt}]
+    })
+  });
+  if (res.status === 401) {
+    localStorage.removeItem('nac_api_key');
+    window.location.href = 'index.html';
+    throw new Error('Invalid API key. Please re-enter it.');
+  }
+  if (!res.ok) throw new Error('API error ' + res.status + ': ' + await res.text());
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+  return data.content.map(function(b){ return b.text || ''; }).join('');
+}
+
+/* ─── GENERATE ─── */
+async function generate() {
+  const topic = document.getElementById('topic-input').value.trim();
+  if (!topic) { alert('Enter a topic first.'); return; }
+  currentTopic = topic;
+  currentTag = document.getElementById('course-tag').value;
+
+  const btn = document.getElementById('generate-btn');
+  btn.disabled = true;
+  document.getElementById('loading-card').classList.add('show');
+  ['review-output','cram-output','pearl-output'].forEach(id => document.getElementById(id).classList.remove('show'));
+  document.getElementById('questions-output').style.display = 'none';
+  document.getElementById('score-bar').classList.remove('show');
+
+  const msgs = ['Pulling mechanisms...','Building clinical logic...','Cross-referencing Nagelhout...','Structuring rationale chains...','Formatting for exam conditions...'];
+  let mi = 0;
+  const iv = setInterval(() => { mi=(mi+1)%msgs.length; document.getElementById('loading-label').textContent=msgs[mi]; }, 1800);
+
+  try {
+    const isQuestion = ['mcq','sata','matching','mixed'].includes(currentMode);
+
+    let raw;
+    if (isQuestion) {
+      const qInstructions = {
+        mcq:'Generate 5 single-best-answer MCQ questions.',
+        sata:'Generate 4 SATA questions (5 options each, 2-4 correct).',
+        matching:'Generate 2 matching questions (5 terms/definitions each).',
+        mixed:'Generate 2 MCQ, 2 SATA, and 1 matching question.'
+      };
+      const qSys = `You are a CRNA board exam question writer. Base questions on Nagelhout & Plaus Nurse Anesthesia as primary reference. Return ONLY valid JSON array, no markdown, no backticks. MCQ: {"type":"mcq","stem":"...","options":["A. ...","B. ...","C. ...","D. ..."],"correct":[0],"rationale":"..."} SATA: {"type":"sata","stem":"Select all that apply.","options":["A. ...","B. ...","C. ...","D. ...","E. ..."],"correct":[0,2],"rationale":"..."} Matching: {"type":"matching","stem":"Match each term","terms":["T1","T2","T3","T4","T5"],"definitions":["D1","D2","D3","D4","D5"],"correct":[0,1,2,3,4],"rationale":"..."} Rationale: 3-5 mechanism-level sentences citing Nagelhout where applicable.`;
+      raw = await callAPI(qSys, `${qInstructions[currentMode]} Topic: ${topic}${currentTag?' (Course: '+currentTag+')':''}`, 2500);
+    } else {
+      raw = await callAPI(getSystemPrompt(currentMode), `${currentMode==='review'?'Write a deep chapter review on':'Generate a '+currentMode+' for'}: ${topic}${currentTag?' (Course: '+currentTag+')':''}`, 2500);
+    }
+
+    clearInterval(iv);
+    document.getElementById('loading-card').classList.remove('show');
+
+    if (currentMode === 'review') renderReview(raw, topic);
+    else if (currentMode === 'cram') renderCram(raw, topic, 'generate');
+    else if (currentMode === 'pearl') renderPearl(raw, topic);
+    else if (isQuestion) {
+      const qs = JSON.parse(raw.replace(/```json|```/g,'').trim());
+      renderQuestions(qs, topic);
+    }
+
+    sessions++; localStorage.setItem('nac_sessions', sessions); updateStreak();
+  } catch(err) {
+    clearInterval(iv);
+    document.getElementById('loading-card').classList.remove('show');
+    showError('generate', err.message);
+  }
+  btn.disabled = false;
+}
+
+function showError(context, msg) {
+  document.getElementById('review-output').classList.add('show');
+  document.getElementById('review-title').textContent = 'Generation failed';
+  document.getElementById('review-body').innerHTML = `<p style="color:var(--red);font-size:13px;">Something went wrong. Check your internet connection and try again.</p><p style="color:var(--muted);font-size:11px;margin-top:6px;font-family:monospace;">${msg}</p>`;
+}
+
+/* ─── CRAM TAB ─── */
+async function cramGenerate() {
+  const topic = document.getElementById('cram-topic-input').value.trim();
+  if (!topic) { alert('Enter a topic first.'); return; }
+  const tag = document.getElementById('cram-course-tag').value;
+  const btn = document.getElementById('cram-btn');
+  btn.disabled = true;
+  document.getElementById('cram-loading').classList.add('show');
+  document.getElementById('cram-tab-output').classList.remove('show');
+  const msgs = ['Stripping to what matters...','Killing the fluff...','Loading exam-day bullets...'];
+  let mi=0; const iv=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('cram-loading-label').textContent=msgs[mi];},1800);
+  try {
+    const raw = await callAPI(getSystemPrompt('cram'), `Generate a cram review for: ${topic}${tag?' (Course: '+tag+')':''}`, 2000);
+    clearInterval(iv);
+    document.getElementById('cram-loading').classList.remove('show');
+    document.getElementById('cram-tab-title').textContent = topic;
+    document.getElementById('cram-tab-body').innerHTML = raw;
+    document.getElementById('cram-tab-output').classList.add('show');
+    sessionData = {type:'cram',topic,tag,content:raw,date:Date.now()};
+    sessions++; localStorage.setItem('nac_sessions',sessions); updateStreak();
+  } catch(err) {
+    clearInterval(iv);
+    document.getElementById('cram-loading').classList.remove('show');
+    alert('Failed: '+err.message);
+  }
+  btn.disabled = false;
+}
+function saveCramTab(e) { if(!sessionData) return; doSave(e.target); }
+
+/* ─── PIMP TAB ─── */
+function quickPimp(topic) {
+  document.getElementById('pimp-topic').value = topic;
+  pimpGenerate();
+}
+
+async function pimpGenerate() {
+  const topic = document.getElementById('pimp-topic').value.trim();
+  if (!topic) { alert('Enter a topic first.'); return; }
+  const btn = document.getElementById('pimp-btn');
+  btn.disabled = true;
+  document.getElementById('pimp-loading').classList.add('show');
+  document.getElementById('pimp-output').classList.remove('show');
+  const msgs = ['Preparing clinical briefing...','Loading attending-level answers...','Anticipating follow-up questions...','Checking your blind spots...'];
+  let mi=0; const iv=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('pimp-loading-label').textContent=msgs[mi];},1800);
+  try {
+    const raw = await callAPI(getSystemPrompt('pimp'), `Full PIMP prep for: ${topic}`, 2500);
+    clearInterval(iv);
+    document.getElementById('pimp-loading').classList.remove('show');
+    document.getElementById('pimp-output-topic').textContent = topic;
+    document.getElementById('pimp-body').innerHTML = raw;
+    document.getElementById('pimp-output').classList.add('show');
+    sessionData = {type:'pimp',topic,content:raw,date:Date.now()};
+    sessions++; localStorage.setItem('nac_sessions',sessions); updateStreak();
+  } catch(err) {
+    clearInterval(iv);
+    document.getElementById('pimp-loading').classList.remove('show');
+    document.getElementById('pimp-output').classList.add('show');
+    document.getElementById('pimp-output-topic').textContent = 'Error';
+    document.getElementById('pimp-body').innerHTML = `<p style="color:var(--red);font-size:13px;">Generation failed: ${err.message}</p>`;
+  }
+  btn.disabled = false;
+}
+function savePimp(e) { if(!sessionData) return; doSave(e.target); }
+
+/* ─── CASE SIMULATOR ─── */
+async function caseGenerate() {
+  const scenario = document.getElementById('case-input').value.trim();
+  if (!scenario) { alert('Enter a patient scenario first.'); return; }
+  const btn = document.getElementById('case-btn');
+  btn.disabled = true;
+  document.getElementById('case-loading').classList.add('show');
+  document.getElementById('case-output').style.display = 'none';
+  const msgs = ['Building case plan...','Running pre-op assessment...','Selecting induction strategy...','Anticipating complications...'];
+  let mi=0; const iv=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('case-loading-label').textContent=msgs[mi];},1800);
+  try {
+    const raw = await callAPI(getSystemPrompt('case'), `Run a full anesthetic case simulation for: ${scenario}`, 2800);
+    clearInterval(iv);
+    document.getElementById('case-loading').classList.remove('show');
+    const shortTitle = scenario.length > 50 ? scenario.substring(0,50)+'…' : scenario;
+    document.getElementById('case-title-display').textContent = shortTitle;
+    document.getElementById('case-body').innerHTML = raw;
+    document.getElementById('case-output').style.display = 'block';
+    sessionData = {type:'case',topic:shortTitle,content:raw,date:Date.now()};
+    sessions++; localStorage.setItem('nac_sessions',sessions); updateStreak();
+  } catch(err) {
+    clearInterval(iv);
+    document.getElementById('case-loading').classList.remove('show');
+    alert('Case generation failed: '+err.message);
+  }
+  btn.disabled = false;
+}
+function saveCaseSim(e) { if(!sessionData) return; doSave(e.target); }
+
+/* ─── WEAK SPOT TRACKER ─── */
+function trackWrong(topic) {
+  if (!topic) return;
+  const key = topic.toLowerCase().substring(0,40);
+  if (!weakSpots[key]) weakSpots[key] = {topic, wrong:0, attempts:0};
+  weakSpots[key].wrong++;
+  weakSpots[key].attempts++;
+  localStorage.setItem('nac_weak', JSON.stringify(weakSpots));
+  renderWeakSpots();
+}
+function trackCorrect(topic) {
+  if (!topic) return;
+  const key = topic.toLowerCase().substring(0,40);
+  if (!weakSpots[key]) weakSpots[key] = {topic, wrong:0, attempts:0};
+  weakSpots[key].attempts++;
+  localStorage.setItem('nac_weak', JSON.stringify(weakSpots));
+  renderWeakSpots();
+}
+function clearWeakSpots() {
+  weakSpots = {};
+  localStorage.setItem('nac_weak', JSON.stringify(weakSpots));
+  renderWeakSpots();
+}
+function renderWeakSpots() {
+  const list = document.getElementById('weak-list');
+  const empty = document.getElementById('weak-empty');
+  const actions = document.getElementById('weak-actions');
+  const entries = Object.values(weakSpots).filter(w => w.attempts > 0).sort((a,b) => (b.wrong/b.attempts) - (a.wrong/a.attempts));
+  if (!empty || !list) return;
+  if (!entries.length) { empty.style.display='block'; list.innerHTML=''; if(actions) actions.style.display='none'; return; }
+  empty.style.display='none'; if(actions) actions.style.display='block';
+  list.innerHTML = entries.slice(0,20).map(w => {
+    const rate = w.attempts > 0 ? Math.round((w.wrong/w.attempts)*100) : 0;
+    const cls = rate >= 60 ? '' : rate >= 30 ? 'ok' : 'good';
+    return `<div class="weak-card">
+      <div class="weak-topic">${w.topic}</div>
+      <div class="weak-bar-wrap"><div class="weak-bar ${cls}" style="width:${rate}%"></div></div>
+      <div class="weak-meta"><span>${rate}% miss rate</span><span>${w.wrong}/${w.attempts} wrong</span></div>
+    </div>`;
+  }).join('');
+}
+
+/* ─── RENDER FUNCTIONS ─── */
+function renderReview(html, topic) {
+  document.getElementById('review-output').classList.add('show');
+  document.getElementById('review-title').textContent = topic;
+  document.getElementById('review-meta').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) + (currentTag?' · '+currentTag:'');
+  document.getElementById('review-body').innerHTML = html;
+  sessionData = {type:'review',topic,tag:currentTag,content:html,date:Date.now()};
+}
+
+function renderCram(html, topic) {
+  document.getElementById('cram-output').classList.add('show');
+  document.getElementById('cram-title').textContent = topic;
+  document.getElementById('cram-body').innerHTML = html;
+  sessionData = {type:'cram',topic,tag:currentTag,content:html,date:Date.now()};
+}
+
+function renderPearl(html, topic) {
+  document.getElementById('pearl-output').classList.add('show');
+  document.getElementById('pearl-title').textContent = topic;
+  document.getElementById('pearl-body').innerHTML = html;
+  sessionData = {type:'pearl',topic,tag:currentTag,content:html,date:Date.now()};
+}
+
+function renderQuestions(questions, topic) {
+  currentQuestions = questions; answered = 0; correct = 0;
+  const stack = document.getElementById('question-stack');
+  stack.innerHTML = '';
+  document.getElementById('questions-output').style.display = 'block';
+
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card'; card.id = 'qcard-'+qi;
+    if (q.type === 'matching') { card.innerHTML = renderMatching(q, qi); }
+    else {
+      const badge = q.type==='sata'?'badge-sata':'badge-mcq';
+      const label = q.type==='sata'?'SATA':'MCQ';
+      const opts = q.options.map((opt,oi) => `<button class="q-opt" id="opt-${qi}-${oi}" onclick="selectOpt(${qi},${oi})"><span class="opt-letter">${String.fromCharCode(65+oi)}</span><span>${opt.replace(/^[A-E]\.\s*/,'')}</span></button>`).join('');
+      card.innerHTML = `<div class="q-header"><span class="q-type-badge ${badge}">${label}</span><div class="q-stem">${q.stem}</div></div><div class="q-options">${opts}</div><div class="q-rationale" id="rat-${qi}"><div class="rationale-label">Rationale</div>${q.rationale}</div>`;
+    }
+    stack.appendChild(card);
+  });
+  sessionData = {type:'questions',topic,tag:currentTag,questions,date:Date.now()};
+}
+
+function selectOpt(qi, oi) {
+  const q = currentQuestions[qi];
+  const allOpts = document.querySelectorAll(`[id^="opt-${qi}-"]`);
+  const alreadyAnswered = Array.from(allOpts).some(o=>o.classList.contains('correct')||o.classList.contains('wrong'));
+  if (alreadyAnswered && q.type!=='sata') return;
+  if (q.type==='sata') {
+    if (alreadyAnswered) return;
+    document.getElementById(`opt-${qi}-${oi}`).classList.toggle('selected');
+  } else {
+    const isCorrect = q.correct.includes(oi);
+    allOpts.forEach((o,idx) => { if(q.correct.includes(idx)) o.classList.add('correct'); else if(idx===oi) o.classList.add('wrong'); });
+    document.getElementById(`rat-${qi}`).classList.add('show');
+    if (isCorrect) { correct++; trackCorrect(currentTopic); } else { trackWrong(currentTopic); }
+    answered++; updateScore();
+  }
+}
+
+function renderMatching(q, qi) {
+  const shuffled = [...q.definitions].sort(()=>Math.random()-0.5);
+  const rows = q.terms.map((t,ti) => `<div class="match-row"><div class="match-term">${t}</div><select class="match-select" id="match-${qi}-${ti}"><option value="">Select...</option>${shuffled.map(d=>`<option value="${q.definitions.indexOf(d)}">${d.length>28?d.substring(0,28)+'…':d}</option>`).join('')}</select></div>`).join('');
+  return `<div class="q-header"><span class="q-type-badge badge-match">MATCHING</span><div class="q-stem">${q.stem}</div></div><div class="match-grid">${rows}</div><div class="check-btn-row"><button class="btn btn-ghost" style="width:100%" onclick="checkMatching(${qi})">Check Answers</button></div><div class="q-rationale" id="rat-${qi}"><div class="rationale-label">Rationale</div>${q.rationale}</div>`;
+}
+
+function checkMatching(qi) {
+  const q = currentQuestions[qi]; let allCorrect = true;
+  q.terms.forEach((t,ti) => {
+    const sel = document.getElementById(`match-${qi}-${ti}`);
+    const chosen = parseInt(sel.value), expected = q.correct[ti];
+    if(chosen===expected) sel.classList.add('correct'); else { sel.classList.add('wrong'); allCorrect=false; }
+    sel.disabled = true;
+  });
+  document.getElementById(`rat-${qi}`).classList.add('show');
+  if(allCorrect) { correct++; trackCorrect(currentTopic); } else { trackWrong(currentTopic); }
+  answered++; updateScore();
+}
+
+function updateScore() {
+  const total = currentQuestions.length;
+  if (answered === total) {
+    document.getElementById('score-bar').classList.add('show');
+    const pct = Math.round((correct/total)*100);
+    document.getElementById('score-num').textContent = pct+'%';
+    document.getElementById('score-detail').textContent = `${correct} / ${total} correct`;
+    if(sessionData) sessionData.score = pct;
+  }
+}
+
+/* ─── HISTORY ─── */
+function saveToHistory(e) { if(!sessionData) return; doSave(e.target); }
+
+function doSave(btn) {
+  history.unshift(sessionData);
+  if(history.length>60) history=history.slice(0,60);
+  localStorage.setItem('nac_history', JSON.stringify(history));
+  renderHistory(); renderDrill();
+  if(btn) { btn.textContent = 'Saved ✓'; btn.disabled = true; }
+}
+
+const typeLabel = {review:'Chapter Review',cram:'⚡ Cram',pearl:'Clinical Pearls',pimp:'OR PIMP',case:'Case Sim',questions:'Questions'};
+
+function renderHistory() {
+  const list = document.getElementById('history-list');
+  const empty = document.getElementById('history-empty');
+  if (!list || !empty) return;
+  if (!history.length) { empty.style.display='block'; list.innerHTML=''; return; }
+  empty.style.display='none';
+  list.innerHTML = history.map((h,i) => `
+    <div class="history-item">
+      <div class="history-topic">${h.topic}</div>
+      <div class="history-meta">
+        <span>${new Date(h.date).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
+        ${h.tag?`<span>${h.tag}</span>`:''}
+        <span>${typeLabel[h.type]||h.type}${h.questions?' ('+h.questions.length+'q)':''}</span>
+        ${h.score!==undefined?`<span class="history-score">${h.score}%</span>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function renderDrill() {
+  const qHistory = history.filter(h=>h.questions&&h.questions.length);
+  const empty = document.getElementById('drill-empty');
+  const content = document.getElementById('drill-content');
+  const sets = document.getElementById('drill-sets');
+  if (!empty || !content || !sets) return;
+  if (!qHistory.length) { empty.style.display='block'; content.style.display='none'; return; }
+  empty.style.display='none'; content.style.display='block';
+  sets.innerHTML = qHistory.map(h => `
+    <div class="history-item" onclick="drillSet(${history.indexOf(h)})">
+      <div class="history-topic">${h.topic}</div>
+      <div class="history-meta">
+        <span>${h.questions.length} questions</span>
+        ${h.tag?`<span>${h.tag}</span>`:''}
+        ${h.score!==undefined?`<span class="history-score">Last: ${h.score}%</span>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function drillSet(idx) {
+  const h = history[idx];
+  switchTab('generate', document.querySelector('.nav-btn'));
+  document.getElementById('topic-input').value = h.topic;
+  renderQuestions(h.questions, h.topic);
+  document.getElementById('questions-output').scrollIntoView({behavior:'smooth'});
+}
+
+</script>
+</body>
+</html>

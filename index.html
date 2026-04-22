@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Age CRNA — Setup</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0c0f; color: #e8eaf0; font-family: -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+.card { background: #13161b; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 28px 24px; width: 100%; max-width: 400px; }
+h1 { font-size: 22px; margin-bottom: 4px; }
+h1 span { color: #4ade80; }
+p { font-size: 13px; color: #6b7280; line-height: 1.6; margin-bottom: 20px; margin-top: 4px; }
+input { width: 100%; background: #1c2029; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 13px; color: #e8eaf0; font-size: 14px; outline: none; margin-bottom: 10px; -webkit-appearance: none; }
+input::placeholder { color: #4b5563; }
+button { width: 100%; padding: 13px; background: #4ade80; color: #0a0c0f; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; -webkit-appearance: none; }
+.msg { font-size: 13px; color: #f87171; margin-bottom: 10px; display: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>New Age <span>CRNA</span></h1>
+  <p>Paste your Anthropic API key below. It saves to this device only and goes directly to Anthropic — nowhere else.</p>
+  <div class="msg" id="msg">Please paste your API key first.</div>
+  <input type="text" id="k" placeholder="sk-ant-api03-..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <button id="btn">Activate</button>
+</div>
+<script>
+document.getElementById('btn').addEventListener('click', function() {
+  var key = document.getElementById('k').value.trim();
+  if (!key) {
+    document.getElementById('msg').style.display = 'block';
+    return;
+  }
+  localStorage.setItem('nac_api_key', key);
+  window.location.href = 'app.html';
+});
+</script>
+</body>
+</html>
